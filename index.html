@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Site Starter AI - Best Website Builder Finder</title>
     <meta name="description" content="Should you use WordPress, Wix, or Shopify? Take the 30-second quiz to find the perfect website builder.">
+    <title>Website Builder Quiz</title>
 
     <style>
-        /* THEME COMPATIBILITY SETTINGS */
+        /* --- THEME COMPATIBILITY SETTINGS --- */
         :root {
             --primary: #2ecc71; /* Bright Green for Hacker Theme */
-            --bg: transparent; /* IMPORTANT: Lets the Jekyll theme background show */
-            --card: rgba(0, 0, 0, 0.6); /* Semi-transparent dark card */
+            --bg: transparent; /* Lets the Jekyll theme background show */
+            --card: rgba(0, 0, 0, 0.7); /* Slightly darker for better readability */
             --border: #444;
             --text: #e2e8f0;
+            --hover-highlight: rgba(46, 204, 113, 0.1);
         }
 
         body {
-            /* We inherit the font from the Jekyll theme */
-            background-color: var(--bg); 
+            background-color: var(--bg);
             color: var(--text);
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 80vh; /* Adjust height to fit theme layout */
+            min-height: 80vh;
             margin: 0;
             padding: 20px;
+            font-family: 'Courier New', Courier, monospace; /* Hacker font fallback */
         }
 
         .container {
@@ -34,226 +34,306 @@
             width: 100%;
             text-align: center;
             margin-top: 20px;
+            position: relative;
         }
 
-        h1 { 
-            font-size: 2.5rem; margin-bottom: 10px; 
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--primary);
-            text-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
-            font-weight: 800;
-        }
-        
-        p.subtitle { color: #a0aec0; font-size: 1.1rem; margin-bottom: 40px; }
-
-        /* Animation */
-        .step { display: none; }
-        .step.active { display: block; animation: fadeIn 0.4s ease; }
-
-        .option-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-            margin-top: 20px;
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
         }
 
-        button.option-btn {
+        /* --- QUIZ CARD STYLING --- */
+        .quiz-card {
             background: var(--card);
             border: 1px solid var(--border);
-            padding: 20px;
             border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-            color: #fff; /* Force white text for contrast */
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-family: inherit; /* Use theme font */
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
         }
 
-        .btn-icon { font-size: 1.5rem; }
-
-        button.option-btn:hover {
-            border-color: var(--primary);
-            background: rgba(46, 204, 113, 0.1); /* Subtle green tint */
-            transform: translateX(5px);
-            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
-        }
-
-        /* Result Card */
-        .result-card {
-            background: #1a202c; /* Solid dark background for readability */
-            border-radius: 12px;
-            padding: 30px;
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background-color: transparent;
             border: 2px solid var(--primary);
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            color: var(--primary);
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 1rem;
         }
 
-        .logo-area { font-size: 3rem; margin-bottom: 15px; }
-        .tool-name { font-size: 2rem; font-weight: 800; margin-bottom: 5px; color: #fff; }
-        .tool-tagline { color: #a0aec0; font-size: 1rem; margin-bottom: 25px; }
-        
-        .reason-box { 
-            background: #2d3748; padding: 15px; border-radius: 8px; 
-            text-align: left; margin-bottom: 25px; border-left: 4px solid var(--primary);
+        .btn:hover {
+            background-color: var(--primary);
+            color: #000;
+            box-shadow: 0 0 15px var(--primary);
         }
-        .reason-title { font-weight: bold; color: var(--primary); margin-bottom: 5px; display: block; }
-        .reason-text { font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; }
 
-        .buy-btn {
+        .btn-block {
             display: block;
             width: 100%;
-            background: var(--primary);
-            color: #1a202c; /* Dark text on green button */
-            text-align: center;
-            padding: 16px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            transition: transform 0.2s;
-            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            margin: 10px 0;
         }
-        .buy-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
 
-        .reset-link { margin-top: 20px; display: block; color: #718096; cursor: pointer; text-decoration: underline; }
-        
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- UTILITIES --- */
+        .hidden {
+            display: none !important;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- FOOTER & PRIVACY LINK --- */
+        footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .privacy-link {
+            color: var(--text);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .privacy-link:hover {
+            color: var(--primary);
+        }
+
+        /* --- PRIVACY MODAL (The requested integration) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid var(--primary);
+            color: var(--text);
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+            text-align: left;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        .modal-content h2 {
+            margin-top: 0;
+            color: var(--primary);
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        
-        <div id="step-0" class="step active">
-            <h1>🚀 Site Starter AI</h1>
-            <p class="subtitle">Don't guess. Find the perfect website builder for your project in 2 clicks.</p>
-            <button class="option-btn" onclick="nextStep(1)" style="justify-content: center;">
-                Start The Quiz
-            </button>
+        <h1>Website Builder Selector</h1>
+
+        <div id="intro-view" class="quiz-card fade-in">
+            <p>Confused between WordPress, Wix, or Shopify?</p>
+            <p>Answer 3 simple questions to get a personalized recommendation.</p>
+            <br>
+            <button class="btn" onclick="startQuiz()">Start Quiz_</button>
         </div>
 
-        <div id="step-1" class="step">
-            <h2>What are you building?</h2>
-            <div class="option-grid">
-                <button class="option-btn" onclick="selectType('store')">
-                    <span class="btn-icon">🛍️</span> Online Store / E-commerce
-                </button>
-                <button class="option-btn" onclick="selectType('blog')">
-                    <span class="btn-icon">📝</span> Blog / News Site
-                </button>
-                <button class="option-btn" onclick="selectType('portfolio')">
-                    <span class="btn-icon">💼</span> Portfolio / Business Card
-                </button>
-            </div>
-        </div>
-
-        <div id="step-2" class="step">
-            <h2>What is your tech skill?</h2>
-            <div class="option-grid">
-                <button class="option-btn" onclick="selectSkill('noob')">
-                    <span class="btn-icon">👶</span> I want it Easy (Drag & Drop)
-                </button>
-                <button class="option-btn" onclick="selectSkill('pro')">
-                    <span class="btn-icon">🤓</span> I want Total Control (WordPress)
-                </button>
-            </div>
-        </div>
-
-        <div id="step-result" class="step">
-            <p class="subtitle">✨ Based on your answers, use this:</p>
-            
-            <div class="result-card">
-                <div class="logo-area" id="res-icon">🚀</div>
-                <div class="tool-name" id="res-name">Loading...</div>
-                <div class="tool-tagline" id="res-tag">The world's best tool for this job.</div>
-                
-                <div class="reason-box">
-                    <span class="reason-title">💡 Why this one?</span>
-                    <span class="reason-text" id="res-reason">...</span>
+        <div id="question-view" class="quiz-card hidden">
+            <h3 id="question-text">Question goes here...</h3>
+            <div id="answers-container">
                 </div>
-
-                <a href="#" target="_blank" class="buy-btn" id="res-link">Get Started (Discount Inside) ↗</a>
-                <div class="reset-link" onclick="location.reload()">Start Over</div>
-            </div>
         </div>
 
+        <div id="result-view" class="quiz-card hidden">
+            <h2>Recommendation: <span id="result-name"></span></h2>
+            <p id="result-desc">Description goes here.</p>
+            <br>
+            <a href="#" id="result-link" class="btn">Get Started</a>
+            <button class="btn" style="border-color: #555; color: #aaa;" onclick="location.reload()">Restart</button>
+        </div>
+    </div>
+
+    <footer>
+        <span class="privacy-link" onclick="openPrivacy()">Privacy Policy & Terms</span>
+    </footer>
+
+    <div id="privacy-modal" class="modal-overlay hidden">
+        <div class="modal-content fade-in">
+            <span class="modal-close" onclick="closePrivacy()">&times;</span>
+            <h2>Privacy Policy</h2>
+            <p><strong>Last Updated:</strong> [Current Date]</p>
+            <p>We respect your privacy. This quiz operates entirely within your browser (client-side).</p>
+            
+            <h3>1. Data Collection</h3>
+            <p>We do not store, save, or transmit your quiz answers to any external server. Your choices are used solely to generate the result on this screen.</p>
+
+            <h3>2. Cookies</h3>
+            <p>This specific tool does not use tracking cookies. However, the host site may use standard analytics to measure traffic.</p>
+
+            <h3>3. Affiliate Disclosure</h3>
+            <p>Recommendations provided may contain affiliate links. If you purchase through these links, we may earn a commission at no extra cost to you.</p>
+            
+            <br>
+            <button class="btn btn-block" onclick="closePrivacy()">I Understand</button>
+        </div>
     </div>
 
     <script>
-        let userChoices = { type: '', skill: '' };
-
-        // --- HOSTING DATABASE (Affiliate Links Go Here) ---
-        const hosts = [
-            // STORE + EASY = SHOPIFY
-            { type: 'store', skill: 'noob', name: 'Shopify', icon: '🛍️',
-              tag: 'The #1 E-commerce Platform',
-              reason: 'Since you want an online store that is easy to manage, Shopify is the only serious choice. It handles payments, inventory, and shipping automatically.',
-              link: 'https://www.shopify.com/' }, // PASTE SHOPIFY LINK
-            
-            // STORE + PRO = WOOCOMMERCE (HOSTINGER)
-            { type: 'store', skill: 'pro', name: 'Hostinger (WooCommerce)', icon: '🔧',
-              tag: 'Power & Freedom',
-              reason: 'Since you have tech skills, using WordPress + WooCommerce on Hostinger is 10x cheaper than Shopify and gives you full control.',
-              link: 'https://www.hostinger.in/' }, // PASTE HOSTINGER LINK
-
-            // BLOG + EASY = WIX / GHOST
-            { type: 'blog', skill: 'noob', name: 'Wix', icon: '🎨',
-              tag: 'Drag, Drop, Done.',
-              reason: 'For a simple blog or business site without coding, Wix allows you to design beautifully just by dragging elements.',
-              link: 'https://www.wix.com/' }, // PASTE WIX LINK
-
-            // BLOG + PRO = WORDPRESS (BLUEHOST/HOSTINGER)
-            { type: 'blog', skill: 'pro', name: 'WordPress (on Hostinger)', icon: '📝',
-              tag: 'The Industry Standard',
-              reason: '43% of the web runs on WordPress. It is the best for SEO and blogging. We recommend Hostinger because it is fast and cheap for India.',
-              link: 'https://www.hostinger.in/' }, // PASTE HOSTINGER LINK
-
-            // PORTFOLIO + EASY = CARRD
-            { type: 'portfolio', skill: 'noob', name: 'Carrd.co', icon: '📄',
-              tag: 'One Page Wonder',
-              reason: 'You do not need a complex site. Carrd builds beautiful one-page portfolios in minutes. It is incredibly cheap.',
-              link: 'https://carrd.co/' }, // PASTE CARRD LINK
-
-            // PORTFOLIO + PRO = WEBFLOW
-            { type: 'portfolio', skill: 'pro', name: 'Webflow', icon: '💎',
-              tag: 'Design Freedom',
-              reason: 'If you want to build an award-winning portfolio with custom animations, Webflow is the tool designers use.',
-              link: 'https://webflow.com/' } // PASTE WEBFLOW LINK
+        // --- QUIZ DATA ---
+        const questions = [
+            {
+                text: "What is the primary goal of your website?",
+                answers: [
+                    { text: "Selling products (E-commerce)", score: "shop" },
+                    { text: "Blogging or Portfolio", score: "content" },
+                    { text: "Business info / Services", score: "generic" }
+                ]
+            },
+            {
+                text: "What is your technical skill level?",
+                answers: [
+                    { text: "Total Beginner (I want drag & drop)", score: "easy" },
+                    { text: "Comfortable (I can tweak settings)", score: "med" },
+                    { text: "Tech Savvy (I want full control)", score: "hard" }
+                ]
+            },
+            {
+                text: "What is your budget?",
+                answers: [
+                    { text: "Low / Free", score: "cheap" },
+                    { text: "Mid-range ($20-30/mo)", score: "med" },
+                    { text: "Investment ($50+/mo)", score: "high" }
+                ]
+            }
         ];
 
-        // --- LOGIC ---
-        function nextStep(n) {
-            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-' + n).classList.add('active');
+        let currentQuestion = 0;
+        let scores = { shop: 0, content: 0, easy: 0, hard: 0 };
+
+        // --- DOM ELEMENTS ---
+        const introView = document.getElementById('intro-view');
+        const questionView = document.getElementById('question-view');
+        const resultView = document.getElementById('result-view');
+        const questionText = document.getElementById('question-text');
+        const answersContainer = document.getElementById('answers-container');
+        const privacyModal = document.getElementById('privacy-modal');
+
+        // --- QUIZ LOGIC ---
+        function startQuiz() {
+            introView.classList.add('hidden');
+            questionView.classList.remove('hidden');
+            questionView.classList.add('fade-in');
+            loadQuestion();
         }
 
-        function selectType(t) { userChoices.type = t; nextStep(2); }
-        function selectSkill(s) { userChoices.skill = s; findResult(); }
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            questionText.innerText = q.text;
+            answersContainer.innerHTML = '';
 
-        function findResult() {
-            let match = hosts.find(h => h.type === userChoices.type && h.skill === userChoices.skill);
-            // Fallback
-            if (!match) match = hosts[3]; 
+            q.answers.forEach(ans => {
+                const btn = document.createElement('button');
+                btn.innerText = ans.text;
+                btn.className = 'btn btn-block';
+                btn.onclick = () => handleAnswer(ans.score);
+                answersContainer.appendChild(btn);
+            });
+        }
 
-            document.getElementById('res-icon').innerText = match.icon;
-            document.getElementById('res-name').innerText = match.name;
-            document.getElementById('res-tag').innerText = match.tag;
-            document.getElementById('res-reason').innerText = match.reason;
-            document.getElementById('res-link').href = match.link;
-            
-            nextStep('result');
+        function handleAnswer(scoreType) {
+            // Simple scoring logic helper
+            if(scoreType === 'shop') scores.shop += 5;
+            if(scoreType === 'content') scores.content += 3;
+            if(scoreType === 'easy') scores.easy += 2;
+            if(scoreType === 'hard') scores.hard += 2;
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionView.classList.add('hidden');
+            resultView.classList.remove('hidden');
+            resultView.classList.add('fade-in');
+
+            let name = "";
+            let desc = "";
+            let link = "#";
+
+            // Basic Decision Logic
+            if (scores.shop >= 5) {
+                name = "Shopify";
+                desc = "You are building an online store. Shopify is the undisputed king of e-commerce, handling inventory, payments, and shipping better than anyone.";
+                link = "https://www.shopify.com";
+            } else if (scores.hard >= 2) {
+                name = "WordPress";
+                desc = "You want control and scalability. WordPress (with hosting) is the best choice for flexibility, SEO, and owning your data.";
+                link = "https://wordpress.org";
+            } else {
+                name = "Wix / Squarespace";
+                desc = "You need a beautiful site up quickly. These drag-and-drop builders are perfect for portfolios and small businesses without the technical headache.";
+                link = "https://www.wix.com";
+            }
+
+            document.getElementById('result-name').innerText = name;
+            document.getElementById('result-desc').innerText = desc;
+            document.getElementById('result-link').href = link;
+        }
+
+        // --- MODAL LOGIC ---
+        function openPrivacy() {
+            privacyModal.classList.remove('hidden');
+        }
+
+        function closePrivacy() {
+            privacyModal.classList.add('hidden');
+        }
+
+        // Close modal if clicking outside the content box
+        window.onclick = function(event) {
+            if (event.target == privacyModal) {
+                closePrivacy();
+            }
         }
     </script>
 </body>
-    <div style="margin-top: 50px; padding: 20px; text-align: center; font-size: 0.8rem; opacity: 0.6;">
-        <p>
-            <a href="privacy.html" style="color: inherit; text-decoration: none;">Privacy Policy</a> | 
-            <span style="cursor: help;" title="We may earn a commission if you buy through our links.">Affiliate Disclosure</span>
-        </p>
-        <p>&copy; 2026 Site Starter AI. All rights reserved.</p>
-    </div>
 </html>
