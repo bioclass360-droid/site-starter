@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Site Starter AI - Best Website Builder Finder</title>
+    <meta name="description" content="Should you use WordPress, Wix, or Shopify? Take the 30-second quiz to find the perfect website builder.">
+
+    <style>
+        /* THEME COMPATIBILITY SETTINGS */
+        :root {
+            --primary: #2ecc71; /* Bright Green for Hacker Theme */
+            --bg: transparent; /* IMPORTANT: Lets the Jekyll theme background show */
+            --card: rgba(0, 0, 0, 0.6); /* Semi-transparent dark card */
+            --border: #444;
+            --text: #e2e8f0;
+        }
+
+        body {
+            /* We inherit the font from the Jekyll theme */
+            background-color: var(--bg); 
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 80vh; /* Adjust height to fit theme layout */
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        h1 { 
+            font-size: 2.5rem; margin-bottom: 10px; 
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+            font-weight: 800;
+        }
+        
+        p.subtitle { color: #a0aec0; font-size: 1.1rem; margin-bottom: 40px; }
+
+        /* Animation */
+        .step { display: none; }
+        .step.active { display: block; animation: fadeIn 0.4s ease; }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button.option-btn {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #fff; /* Force white text for contrast */
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: inherit; /* Use theme font */
+        }
+
+        .btn-icon { font-size: 1.5rem; }
+
+        button.option-btn:hover {
+            border-color: var(--primary);
+            background: rgba(46, 204, 113, 0.1); /* Subtle green tint */
+            transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
+        }
+
+        /* Result Card */
+        .result-card {
+            background: #1a202c; /* Solid dark background for readability */
+            border-radius: 12px;
+            padding: 30px;
+            border: 2px solid var(--primary);
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .logo-area { font-size: 3rem; margin-bottom: 15px; }
+        .tool-name { font-size: 2rem; font-weight: 800; margin-bottom: 5px; color: #fff; }
+        .tool-tagline { color: #a0aec0; font-size: 1rem; margin-bottom: 25px; }
+        
+        .reason-box { 
+            background: #2d3748; padding: 15px; border-radius: 8px; 
+            text-align: left; margin-bottom: 25px; border-left: 4px solid var(--primary);
+        }
+        .reason-title { font-weight: bold; color: var(--primary); margin-bottom: 5px; display: block; }
+        .reason-text { font-size: 0.95rem; color: #e2e8f0; line-height: 1.5; }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            background: var(--primary);
+            color: #1a202c; /* Dark text on green button */
+            text-align: center;
+            padding: 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+        .buy-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+        .reset-link { margin-top: 20px; display: block; color: #718096; cursor: pointer; text-decoration: underline; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="step-0" class="step active">
+            <h1>🚀 Site Starter AI</h1>
+            <p class="subtitle">Don't guess. Find the perfect website builder for your project in 2 clicks.</p>
+            <button class="option-btn" onclick="nextStep(1)" style="justify-content: center;">
+                Start The Quiz
+            </button>
+        </div>
+
+        <div id="step-1" class="step">
+            <h2>What are you building?</h2>
+            <div class="option-grid">
+                <button class="option-btn" onclick="selectType('store')">
+                    <span class="btn-icon">🛍️</span> Online Store / E-commerce
+                </button>
+                <button class="option-btn" onclick="selectType('blog')">
+                    <span class="btn-icon">📝</span> Blog / News Site
+                </button>
+                <button class="option-btn" onclick="selectType('portfolio')">
+                    <span class="btn-icon">💼</span> Portfolio / Business Card
+                </button>
+            </div>
+        </div>
+
+        <div id="step-2" class="step">
+            <h2>What is your tech skill?</h2>
+            <div class="option-grid">
+                <button class="option-btn" onclick="selectSkill('noob')">
+                    <span class="btn-icon">👶</span> I want it Easy (Drag & Drop)
+                </button>
+                <button class="option-btn" onclick="selectSkill('pro')">
+                    <span class="btn-icon">🤓</span> I want Total Control (WordPress)
+                </button>
+            </div>
+        </div>
+
+        <div id="step-result" class="step">
+            <p class="subtitle">✨ Based on your answers, use this:</p>
+            
+            <div class="result-card">
+                <div class="logo-area" id="res-icon">🚀</div>
+                <div class="tool-name" id="res-name">Loading...</div>
+                <div class="tool-tagline" id="res-tag">The world's best tool for this job.</div>
+                
+                <div class="reason-box">
+                    <span class="reason-title">💡 Why this one?</span>
+                    <span class="reason-text" id="res-reason">...</span>
+                </div>
+
+                <a href="#" target="_blank" class="buy-btn" id="res-link">Get Started (Discount Inside) ↗</a>
+                <div class="reset-link" onclick="location.reload()">Start Over</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let userChoices = { type: '', skill: '' };
+
+        // --- HOSTING DATABASE (Affiliate Links Go Here) ---
+        const hosts = [
+            // STORE + EASY = SHOPIFY
+            { type: 'store', skill: 'noob', name: 'Shopify', icon: '🛍️',
+              tag: 'The #1 E-commerce Platform',
+              reason: 'Since you want an online store that is easy to manage, Shopify is the only serious choice. It handles payments, inventory, and shipping automatically.',
+              link: 'https://www.shopify.com/' }, // PASTE SHOPIFY LINK
+            
+            // STORE + PRO = WOOCOMMERCE (HOSTINGER)
+            { type: 'store', skill: 'pro', name: 'Hostinger (WooCommerce)', icon: '🔧',
+              tag: 'Power & Freedom',
+              reason: 'Since you have tech skills, using WordPress + WooCommerce on Hostinger is 10x cheaper than Shopify and gives you full control.',
+              link: 'https://www.hostinger.in/' }, // PASTE HOSTINGER LINK
+
+            // BLOG + EASY = WIX / GHOST
+            { type: 'blog', skill: 'noob', name: 'Wix', icon: '🎨',
+              tag: 'Drag, Drop, Done.',
+              reason: 'For a simple blog or business site without coding, Wix allows you to design beautifully just by dragging elements.',
+              link: 'https://www.wix.com/' }, // PASTE WIX LINK
+
+            // BLOG + PRO = WORDPRESS (BLUEHOST/HOSTINGER)
+            { type: 'blog', skill: 'pro', name: 'WordPress (on Hostinger)', icon: '📝',
+              tag: 'The Industry Standard',
+              reason: '43% of the web runs on WordPress. It is the best for SEO and blogging. We recommend Hostinger because it is fast and cheap for India.',
+              link: 'https://www.hostinger.in/' }, // PASTE HOSTINGER LINK
+
+            // PORTFOLIO + EASY = CARRD
+            { type: 'portfolio', skill: 'noob', name: 'Carrd.co', icon: '📄',
+              tag: 'One Page Wonder',
+              reason: 'You do not need a complex site. Carrd builds beautiful one-page portfolios in minutes. It is incredibly cheap.',
+              link: 'https://carrd.co/' }, // PASTE CARRD LINK
+
+            // PORTFOLIO + PRO = WEBFLOW
+            { type: 'portfolio', skill: 'pro', name: 'Webflow', icon: '💎',
+              tag: 'Design Freedom',
+              reason: 'If you want to build an award-winning portfolio with custom animations, Webflow is the tool designers use.',
+              link: 'https://webflow.com/' } // PASTE WEBFLOW LINK
+        ];
+
+        // --- LOGIC ---
+        function nextStep(n) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step-' + n).classList.add('active');
+        }
+
+        function selectType(t) { userChoices.type = t; nextStep(2); }
+        function selectSkill(s) { userChoices.skill = s; findResult(); }
+
+        function findResult() {
+            let match = hosts.find(h => h.type === userChoices.type && h.skill === userChoices.skill);
+            // Fallback
+            if (!match) match = hosts[3]; 
+
+            document.getElementById('res-icon').innerText = match.icon;
+            document.getElementById('res-name').innerText = match.name;
+            document.getElementById('res-tag').innerText = match.tag;
+            document.getElementById('res-reason').innerText = match.reason;
+            document.getElementById('res-link').href = match.link;
+            
+            nextStep('result');
+        }
+    </script>
+</body>
+</html>
